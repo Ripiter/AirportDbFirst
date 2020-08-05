@@ -10,8 +10,8 @@ namespace Airport
     {
         static void Main(string[] args)
         {
-           
 
+            AddAirport();
             Console.WriteLine("Done");
             Console.ReadKey();
 
