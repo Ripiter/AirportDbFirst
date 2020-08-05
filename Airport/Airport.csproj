@@ -45,6 +45,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,12 +55,58 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AirPort.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AirPort.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AirPort.cs">
+      <DependentUpon>AirPort.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AirPort.Designer.cs">
+      <DependentUpon>AirPort.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AirPort1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AirPort.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Company.cs">
+      <DependentUpon>AirPort.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Plane.cs">
+      <DependentUpon>AirPort.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EntityDeploy Include="AirPort.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AirPort.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="AirPort.edmx.diagram">
+      <DependentUpon>AirPort.edmx</DependentUpon>
+    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AirPort.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AirPort.edmx</DependentUpon>
+      <LastGenOutput>AirPort.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="AirPort.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AirPort.edmx</DependentUpon>
+      <LastGenOutput>AirPort1.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
