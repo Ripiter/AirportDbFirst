@@ -10,7 +10,22 @@ namespace Airport
     {
         static void Main(string[] args)
         {
-            
+            using (var context = new DbFirstEntities1())
+            {
+                var result = context.GetCompanyNameByID(2);
+
+                Console.WriteLine(result.First());
+                
+
+                var result2 = context.GetPlanesFromDestination("CPH");
+
+                foreach (var item in result2)
+                {
+                    Console.WriteLine(item.Company.CompanyName);
+                }
+
+
+            }
 
             Console.WriteLine("Done");
             Console.ReadKey();

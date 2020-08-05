@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DbFirstModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Airport">
+          <Key>
+            <PropertyRef Name="Iata" />
+          </Key>
+          <Property Name="City" Type="varchar" MaxLength="55" />
+          <Property Name="Iata" Type="varchar" MaxLength="55" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="int" Nullable="false" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="55" />
+        </EntityType>
+        <EntityType Name="Plane">
+          <Key>
+            <PropertyRef Name="PlaneID" />
+          </Key>
+          <Property Name="PlaneID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlaneName" Type="varchar" MaxLength="55" />
+          <Property Name="Destination" Type="varchar" MaxLength="55" />
+          <Property Name="CompanyID" Type="int" />
+        </EntityType>
+        <Association Name="CompanyID">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Plane" Type="Self.Plane" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Plane">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Destination">
+          <End Role="Airport" Type="Self.Airport" Multiplicity="0..1" />
+          <End Role="Plane" Type="Self.Plane" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airport">
+              <PropertyRef Name="Iata" />
+            </Principal>
+            <Dependent Role="Plane">
+              <PropertyRef Name="Destination" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GetCompanyNameByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetPlaneNamesFromDestination" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Destination" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetPlanesFromDestination" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Destination" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="DbFirstModelStoreContainer">
+          <EntitySet Name="Airport" EntityType="Self.Airport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Plane" EntityType="Self.Plane" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="CompanyID" Association="Self.CompanyID">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Plane" EntitySet="Plane" />
+          </AssociationSet>
+          <AssociationSet Name="Destination" Association="Self.Destination">
+            <End Role="Airport" EntitySet="Airport" />
+            <End Role="Plane" EntitySet="Plane" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DbFirstModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Airport">
+          <Key>
+            <PropertyRef Name="Iata" />
+          </Key>
+          <Property Name="City" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <Property Name="Iata" Type="String" MaxLength="55" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Planes" Relationship="DbFirstModel.Destination" FromRole="Airport" ToRole="Plane" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" Nullable="false" />
+          <Property Name="CompanyName" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Planes" Relationship="Self.CompanyID" FromRole="Company" ToRole="Plane" />
+        </EntityType>
+        <EntityType Name="Plane">
+          <Key>
+            <PropertyRef Name="PlaneID" />
+          </Key>
+          <Property Name="PlaneID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlaneName" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyID" Type="Int32" />
+          <NavigationProperty Name="Company" Relationship="Self.CompanyID" FromRole="Plane" ToRole="Company" />
+          <Property Name="Destination" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Airport" Relationship="DbFirstModel.Destination" FromRole="Plane" ToRole="Airport" />
+        </EntityType>
+        <Association Name="CompanyID">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Plane" Type="Self.Plane" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Plane">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DbFirstEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Airports" EntityType="Self.Airport" />
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="Planes" EntityType="Self.Plane" />
+          <AssociationSet Name="CompanyID" Association="Self.CompanyID">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Plane" EntitySet="Planes" />
+          </AssociationSet>
+          <FunctionImport Name="GetCompanyNameByID" ReturnType="Collection(String)">
+          <Parameter Name="CompanyID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <AssociationSet Name="Destination" Association="DbFirstModel.Destination">
+            <End Role="Airport" EntitySet="Airports" />
+            <End Role="Plane" EntitySet="Planes" />
+          </AssociationSet>
+          <FunctionImport Name="GetPlanesFromDestination" EntitySet="Planes" ReturnType="Collection(DbFirstModel.Plane)">
+          <Parameter Name="Destination" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetPlaneNamesFromDestination" ReturnType="Collection(String)">
+          <Parameter Name="Destination" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <Association Name="Destination">
+          <End Type="DbFirstModel.Airport" Role="Airport" Multiplicity="0..1" />
+          <End Type="DbFirstModel.Plane" Role="Plane" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airport">
+              <PropertyRef Name="Iata" />
+            </Principal>
+            <Dependent Role="Plane">
+              <PropertyRef Name="Destination" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DbFirstModelStoreContainer" CdmEntityContainer="DbFirstEntities1">
+          <EntitySetMapping Name="Airports">
+            <EntityTypeMapping TypeName="DbFirstModel.Airport">
+              <MappingFragment StoreEntitySet="Airport">
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Iata" ColumnName="Iata" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="DbFirstModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Planes">
+            <EntityTypeMapping TypeName="DbFirstModel.Plane">
+              <MappingFragment StoreEntitySet="Plane">
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="PlaneID" ColumnName="PlaneID" />
+                <ScalarProperty Name="PlaneName" ColumnName="PlaneName" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetCompanyNameByID" FunctionName="DbFirstModel.Store.GetCompanyNameByID" />
+          <FunctionImportMapping FunctionImportName="GetPlanesFromDestination" FunctionName="DbFirstModel.Store.GetPlanesFromDestination" />
+          <FunctionImportMapping FunctionImportName="GetPlaneNamesFromDestination" FunctionName="DbFirstModel.Store.GetPlaneNamesFromDestination" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -55,15 +55,58 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Airport.cs">
+      <DependentUpon>DbFirstModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Company.cs">
+      <DependentUpon>DbFirstModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbFirstModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbFirstModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbFirstModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbFirstModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbFirstModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbFirstModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Plane.cs">
+      <DependentUpon>DbFirstModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="DbFirstModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DbFirstModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DbFirstModel.edmx.diagram">
+      <DependentUpon>DbFirstModel.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DbFirstModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DbFirstModel.edmx</DependentUpon>
+      <LastGenOutput>DbFirstModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DbFirstModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DbFirstModel.edmx</DependentUpon>
+      <LastGenOutput>DbFirstModel.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
